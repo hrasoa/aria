@@ -145,6 +145,7 @@ export default function useListBox(items: string[], options: Options = {}) {
 
   return {
     activeId,
+    getItemAttributes,
     handleFocus,
     handleMoveDown,
     handleMoveUp,
@@ -152,6 +153,5 @@ export default function useListBox(items: string[], options: Options = {}) {
     handleSelectActiveRef,
     handleSelectItem,
     listAttributes,
-    getItemAttributes,
   };
 }
