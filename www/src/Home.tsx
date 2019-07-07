@@ -5,7 +5,7 @@ import logo from './react.svg';
 import './Home.css';
 
 function Home() {
-  const [activeId] = useListBox([]);
+  const { activeId } = useListBox([]);
   return (
     <div className="Home">
       <div className="Home-header">

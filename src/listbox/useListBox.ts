@@ -143,16 +143,15 @@ export default function useListBox(items: string[], options: Options = {}) {
     };
   }
 
-  return [
+  return {
     activeId,
-    {
-      handleFocus,
-      handleMoveDown,
-      handleMoveUp,
-      handleNavigation,
-      handleSelectActiveRef,
-      handleSelectItem,
-    },
-    { listAttributes, getItemAttributes },
-  ];
+    handleFocus,
+    handleMoveDown,
+    handleMoveUp,
+    handleNavigation,
+    handleSelectActiveRef,
+    handleSelectItem,
+    listAttributes,
+    getItemAttributes,
+  };
 }
