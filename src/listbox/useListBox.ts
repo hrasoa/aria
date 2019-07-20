@@ -3,19 +3,21 @@ import interactionType from 'ally.js/src/observe/interaction-type';
 import keyCode from 'ally.js/src/map/keycode';
 
 interface Options {
-  listRef?: RefObject<HTMLElement>;
-  scrollRef?: RefObject<HTMLElement>;
+  readonly listRef?: RefObject<HTMLElement>;
+  readonly scrollRef?: RefObject<HTMLElement>;
 }
 
-export default function useListBox(items: any[], options: Options = {}) {
-  const [highlightedId, setHighlightedId] = useState<any>();
+type ID = any;
+
+export default function useListBox(items: ID[], options: Options = {}) {
+  const [highlightedId, setHighlightedId] = useState<ID>();
   const [highlightedRef, setHightlightedRef] = useState();
   const interactionTypeHandler = useRef<{
     disengage: () => void;
     get: () => { key: boolean };
   }>();
-  const itemsByIds = useRef<any[]>([]);
-  const prevHighlightedId = useRef<any>();
+  const itemsByIds = useRef<ID[]>([]);
+  const prevHighlightedId = useRef<ID>();
   itemsByIds.current = [...items];
   const { listRef, scrollRef } = options;
 
@@ -90,11 +92,11 @@ export default function useListBox(items: any[], options: Options = {}) {
     }
   }
 
-  function handleHighlightItem(itemId: any) {
-    if (itemId === prevHighlightedId.current) {
+  function handleHighlightItem(id: ID) {
+    if (id === prevHighlightedId.current) {
       return;
     }
-    setHighlightedId(itemId);
+    setHighlightedId(id);
   }
 
   function handleMoveUp() {
@@ -131,12 +133,14 @@ export default function useListBox(items: any[], options: Options = {}) {
     setHightlightedRef(ref);
   }
 
-  const listAttributes = {
+  const listAttributes: { 'aria-activedescendant': ID; role: 'listbox' } = {
     'aria-activedescendant': highlightedId,
     role: 'listbox',
   };
 
-  function getItemAttributes(id: any) {
+  function getItemAttributes(
+    id: ID
+  ): { 'aria-selected': true | undefined; role: 'option' } {
     return {
       'aria-selected': id === highlightedId || undefined,
       role: 'option',

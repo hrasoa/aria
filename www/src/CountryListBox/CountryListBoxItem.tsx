@@ -4,7 +4,7 @@ interface Props {
   highlightedId: any;
   getItemAttributes: (
     id: number
-  ) => { 'aria-selected': boolean | undefined; role: string };
+  ) => { 'aria-selected': true | undefined; role: 'option' };
   onHighlightRef: (ref: RefObject<HTMLElement>) => void;
   onHighlightItem: (id: number) => void;
   country: {
