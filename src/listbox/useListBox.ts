@@ -1,21 +1,21 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, KeyboardEvent, RefObject } from 'react';
 import interactionType from 'ally.js/src/observe/interaction-type';
 import keyCode from 'ally.js/src/map/keycode';
 
 interface Options {
-  listRef?: { current: HTMLElement };
-  scrollRef?: { current: HTMLElement };
+  listRef?: RefObject<HTMLElement>;
+  scrollRef?: RefObject<HTMLElement>;
 }
 
-export default function useListBox(items: string[], options: Options = {}) {
-  const [activeId, setActiveId] = useState<string>();
-  const [activeRef, setActiveRef] = useState();
+export default function useListBox(items: any[], options: Options = {}) {
+  const [highlightedId, setHighlightedId] = useState<any>();
+  const [highlightedRef, setHightlightedRef] = useState();
   const interactionTypeHandler = useRef<{
     disengage: () => void;
     get: () => { key: boolean };
   }>();
-  const itemsByIds = useRef<string[]>([]);
-  const prevActiveId = useRef<string>();
+  const itemsByIds = useRef<any[]>([]);
+  const prevHighlightedId = useRef<any>();
   itemsByIds.current = [...items];
   const { listRef, scrollRef } = options;
 
@@ -33,14 +33,14 @@ export default function useListBox(items: string[], options: Options = {}) {
 
   useEffect(() => {
     if (
-      !(activeRef && activeRef.current) ||
+      !(highlightedRef && highlightedRef.current) ||
       !(listRef && listRef.current) ||
       !(scrollRef && scrollRef.current)
     ) {
       return;
     }
     const listClientRect = listRef.current.getBoundingClientRect();
-    const elementClientRect = activeRef.current.getBoundingClientRect();
+    const elementClientRect = highlightedRef.current.getBoundingClientRect();
     const listBottom = listClientRect.top + listClientRect.height;
     const elementBottom = elementClientRect.top + elementClientRect.height;
     if (elementBottom > listBottom) {
@@ -51,23 +51,23 @@ export default function useListBox(items: string[], options: Options = {}) {
         scrollRef.current.scrollTop -
         (listClientRect.top - elementClientRect.top);
     }
-  }, [activeRef]);
+  }, [highlightedRef]);
 
   useEffect(() => {
-    prevActiveId.current = activeId;
-  }, [activeId]);
+    prevHighlightedId.current = highlightedId;
+  }, [highlightedId]);
 
   function handleFocus() {
     if (!interactionTypeHandler.current) {
       return;
     }
     const { key } = interactionTypeHandler.current.get();
-    if (key && !prevActiveId.current) {
-      handleSelectItem(itemsByIds.current[0]);
+    if (key && !prevHighlightedId.current) {
+      handleHighlightItem(itemsByIds.current[0]);
     }
   }
 
-  function handleNavigation(e: KeyboardEvent) {
+  function handleKeyboardNavigation(e: KeyboardEvent) {
     switch (e.which) {
       case keyCode.down:
         e.preventDefault();
@@ -90,68 +90,66 @@ export default function useListBox(items: string[], options: Options = {}) {
     }
   }
 
-  function handleSelectItem(itemId: string) {
-    if (itemId === prevActiveId.current) {
+  function handleHighlightItem(itemId: any) {
+    if (itemId === prevHighlightedId.current) {
       return;
     }
-    setActiveId(itemId);
+    setHighlightedId(itemId);
   }
 
   function handleMoveUp() {
-    if (!prevActiveId.current) {
+    if (!prevHighlightedId.current) {
       return;
     }
-    const index = itemsByIds.current.indexOf(prevActiveId.current);
+    const index = itemsByIds.current.indexOf(prevHighlightedId.current);
     if (index === 0) {
       return;
     }
-    handleSelectItem(itemsByIds.current[index - 1]);
+    handleHighlightItem(itemsByIds.current[index - 1]);
   }
 
   function handleMoveDown() {
-    if (!prevActiveId.current) {
+    if (!prevHighlightedId.current) {
       return;
     }
-    const index = itemsByIds.current.indexOf(prevActiveId.current);
+    const index = itemsByIds.current.indexOf(prevHighlightedId.current);
     if (index === itemsByIds.current.length - 1) {
       return;
     }
-    handleSelectItem(itemsByIds.current[index + 1]);
+    handleHighlightItem(itemsByIds.current[index + 1]);
   }
 
   function handleMoveFirst() {
-    handleSelectItem(itemsByIds.current[0]);
+    handleHighlightItem(itemsByIds.current[0]);
   }
 
   function handleMoveLast() {
-    handleSelectItem(itemsByIds.current[itemsByIds.current.length - 1]);
+    handleHighlightItem(itemsByIds.current[itemsByIds.current.length - 1]);
   }
 
-  function handleSelectActiveRef(ref: { current: HTMLElement }) {
-    setActiveRef(ref);
+  function handleHighlightRef(ref: RefObject<HTMLElement>) {
+    setHightlightedRef(ref);
   }
 
   const listAttributes = {
-    'aria-activedescendant': activeId,
+    'aria-activedescendant': highlightedId,
     role: 'listbox',
   };
 
-  function getItemAttributes(id: string) {
+  function getItemAttributes(id: any) {
     return {
-      'aria-selected': id === activeId || null,
+      'aria-selected': id === highlightedId || undefined,
       role: 'option',
     };
   }
 
   return {
-    activeId,
     getItemAttributes,
     handleFocus,
-    handleMoveDown,
-    handleMoveUp,
-    handleNavigation,
-    handleSelectActiveRef,
-    handleSelectItem,
+    handleHighlightItem,
+    handleHighlightRef,
+    handleKeyboardNavigation,
+    highlightedId,
     listAttributes,
   };
 }

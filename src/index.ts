@@ -1,3 +1,1 @@
-import * as listbox from './listbox/index';
-
-export { listbox };
+export * from './listbox/index';

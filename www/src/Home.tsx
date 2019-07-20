@@ -1,11 +1,8 @@
 import React from 'react';
-import { useListBox } from 'lib/listbox';
 import logo from './react.svg';
-
-import './Home.css';
+import CountryListBox from './CountryListBox/CountryListBox';
 
 function Home() {
-  const { activeId } = useListBox([]);
   return (
     <div className="Home">
       <div className="Home-header">
@@ -16,6 +13,7 @@ function Home() {
         To get started, edit <code>src/App.tsx</code> or{' '}
         <code>src/Home.tsx</code> and save to reload.
       </p>
+      <CountryListBox />
       <ul className="Home-resources">
         <li>
           <a href="https://github.com/jaredpalmer/razzle">Docs</a>

@@ -2,7 +2,7 @@ import express from 'express';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
-
+import { ServerStyleSheet } from 'styled-components';
 import App from './App';
 
 let assets: any;
@@ -16,12 +16,16 @@ const server = express()
   .disable('x-powered-by')
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR!))
   .get('/*', (req: express.Request, res: express.Response) => {
+    const sheet = new ServerStyleSheet();
     const context = {};
     const markup = renderToString(
-      <StaticRouter context={context} location={req.url}>
-        <App />
-      </StaticRouter>
+      sheet.collectStyles(
+        <StaticRouter context={context} location={req.url}>
+          <App />
+        </StaticRouter>
+      )
     );
+    const styleTags = sheet.getStyleTags();
     res.send(
       `<!doctype html>
     <html lang="">
@@ -40,6 +44,7 @@ const server = express()
               ? `<script src="${assets.client.js}" defer></script>`
               : `<script src="${assets.client.js}" defer crossorigin></script>`
           }
+          ${styleTags}
     </head>
     <body>
         <div id="root">${markup}</div>

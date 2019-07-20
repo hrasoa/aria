@@ -2,7 +2,16 @@
 const path = require('path');
 
 module.exports = {
-  plugins: ['typescript'],
+  plugins: [
+    {
+      name: 'typescript',
+      options: {
+        forkTsChecker: {
+          reportFiles: ['src/**/*.{ts,tsx}', '../src/**/*.{ts,tsx}'],
+        },
+      },
+    },
+  ],
   modify: (config, { target, dev }, webpack) => {
     const resolve = {
       ...config.resolve,

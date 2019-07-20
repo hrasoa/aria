@@ -20,14 +20,15 @@
     "strict": true,
     "pretty": true,
     "suppressImplicitAnyIndexErrors": true,
-    "target": "es2016",
+    "target": "es2015",
     "baseUrl": "./",
     "paths": {
       "lib/*": ["../src/*"]
     }
   },
   "exclude": [
-    "node_modules",
+    "../node_modules/**",
+    "./node_modules/**",
     "build",
     "scripts",
     "acceptance-tests",

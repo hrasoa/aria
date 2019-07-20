@@ -20,6 +20,7 @@ const port = process.env.PORT || 3000;
 
 export default express()
   .use((req, res) => app.handle(req, res))
+  // tslint:disable-next-line
   .listen(port, (err: Error) => {
     if (err) {
       console.error(err);
