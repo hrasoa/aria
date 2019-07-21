@@ -26,7 +26,7 @@ const typeAheadList = Object.keys(keyCode).reduce(
 
 export default function useListBox(items: Item[], options: Options = {}) {
   const [highlightedId, handleHighlightItem] = useState<ID>();
-  const [highlightedRef, setHightlightedRef] = useState<
+  const [highlightedRef, handleHighlightRef] = useState<
     RefObject<HTMLElement>
   >();
   const interactionTypeHandler = useRef<{
@@ -187,10 +187,6 @@ export default function useListBox(items: Item[], options: Options = {}) {
 
   function handleMoveLast() {
     handleHighlightItem(list.current[list.current.length - 1].id);
-  }
-
-  function handleHighlightRef(ref: RefObject<HTMLElement>) {
-    setHightlightedRef(ref);
   }
 
   const listAttributes: { 'aria-activedescendant': ID; role: 'listbox' } = {
