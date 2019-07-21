@@ -7,6 +7,8 @@ module.exports = {
       name: 'typescript',
       options: {
         forkTsChecker: {
+          tsconfig: '../tsconfig.json',
+          tslint: '../tslint.json',
           reportFiles: ['src/**/*.{ts,tsx}', '../src/**/*.{ts,tsx}'],
         },
       },

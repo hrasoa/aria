@@ -23,18 +23,17 @@
     "target": "es2015",
     "baseUrl": "./",
     "paths": {
-      "lib/*": ["../src/*"]
+      "lib/*": ["./src/*"]
     }
   },
   "exclude": [
-    "../node_modules/**",
-    "./node_modules/**",
-    "build",
+    "node_modules",
+    "./www/build",
     "scripts",
     "acceptance-tests",
-    "webpack",
+    "./www/webpack",
     "jest",
-    "razzle.config.js"
+    "./www/razzle.config.js"
   ],
   "types": ["typePatches", "node", "webpack-env"]
 }

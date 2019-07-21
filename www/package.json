@@ -27,11 +27,11 @@
     "babel-plugin-styled-components": "^1.10.6",
     "razzle": "^3.0.0",
     "razzle-plugin-typescript": "^3.0.0",
-    "ts-jest": "^22.4.5",
-    "tslint": "^5.10.0",
-    "tslint-config-prettier": "^1.18.0",
-    "tslint-react": "^3.5.1",
-    "typescript": "^2.8.3"
+    "ts-jest": "file:../node_modules/ts-jest",
+    "tslint": "file:../node_modules/tslint",
+    "tslint-config-prettier": "file:../node_modules/tslint-config-prettier",
+    "tslint-react": "file:../node_modules/tslint-react",
+    "typescript": "file:../node_modules/typescript"
   },
   "jest": {
     "transform": {
