@@ -55,16 +55,6 @@ export default function useListBox(items: Item[], options: Options = {}) {
 
   useEffect(handleScrollToHighlightedRef, [highlightedRef]);
 
-  useEffect(() => {
-    if (!highlightedId) {
-      return;
-    }
-    prevHighlightedId.current = highlightedId;
-    typeAhead.current.index = list.current.findIndex(
-      item => item.id === highlightedId
-    );
-  }, [highlightedId]);
-
   function handleFocus() {
     if (!interactionTypeHandler.current) {
       return;
@@ -207,6 +197,16 @@ export default function useListBox(items: Item[], options: Options = {}) {
       role: 'option',
     };
   }
+
+  useEffect(() => {
+    if (!highlightedId) {
+      return;
+    }
+    prevHighlightedId.current = highlightedId;
+    typeAhead.current.index = list.current.findIndex(
+      item => item.id === highlightedId
+    );
+  }, [highlightedId]);
 
   return {
     getItemAttributes,

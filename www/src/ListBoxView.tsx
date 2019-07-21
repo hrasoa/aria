@@ -56,7 +56,6 @@ export default function ListBoxView() {
             exact
             render={() => (
               <div>
-                <input type="text" placeholder="Text" />
                 <span id="countries-exp">Countries</span>
                 <CountrySelect ariaLabelledBy="countries-exp" />
               </div>

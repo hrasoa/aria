@@ -1,4 +1,11 @@
-import { KeyboardEvent, useState, useEffect, RefObject, useRef } from 'react';
+import {
+  KeyboardEvent,
+  useState,
+  useEffect,
+  RefObject,
+  useRef,
+  MouseEvent,
+} from 'react';
 import keyCode from 'ally.js/src/map/keycode';
 
 interface Options {
@@ -7,17 +14,29 @@ interface Options {
   buttonRef: RefObject<HTMLElement>;
   popupRole?: 'listbox' | true;
   popupId?: string;
+  onClickOutside?: () => void;
 }
 
 export default function useMenuButton(options: Options) {
   const [expanded, handleExpanded] = useState<boolean>(false);
   const prevExpanded = useRef<boolean>();
-  const { wrapperRef, popupRef, buttonRef, popupId, popupRole } = options;
+  const {
+    wrapperRef,
+    popupRef,
+    buttonRef,
+    popupId,
+    popupRole,
+    onClickOutside,
+  } = options;
 
   useEffect(() => {
-    document.addEventListener('click', handlePopupClickOutside, true);
+    if (onClickOutside) {
+      document.addEventListener('click', handlePopupClickOutside, true);
+    }
     return () => {
-      document.removeEventListener('click', handlePopupClickOutside, true);
+      if (onClickOutside) {
+        document.removeEventListener('click', handlePopupClickOutside, true);
+      }
     };
   }, []);
 
@@ -26,16 +45,14 @@ export default function useMenuButton(options: Options) {
       return;
     }
     if (
-      !wrapperRef.current.contains(event.target as HTMLElement) &&
-      popupRef.current &&
-      document.activeElement !== popupRef.current
+      onClickOutside &&
+      !wrapperRef.current.contains(event.target as HTMLElement)
     ) {
-      popupRef.current.blur();
+      onClickOutside();
     }
-    // handleExpanded(false);
   }
 
-  function handleButtonClick() {
+  function handleButtonClick(e: MouseEvent<HTMLElement>) {
     handleExpanded(true);
   }
 
@@ -78,6 +95,11 @@ export default function useMenuButton(options: Options) {
       if (expanded) {
         popupRef.current.focus();
       }
+      console.log(
+        !expanded && prevExpanded.current,
+        !document.activeElement ||
+          document.activeElement.tagName.toLowerCase() === 'body'
+      );
       if (
         !expanded &&
         prevExpanded.current &&
@@ -85,6 +107,7 @@ export default function useMenuButton(options: Options) {
         (!document.activeElement ||
           document.activeElement.tagName.toLowerCase() === 'body')
       ) {
+        console.log('focus buton');
         buttonRef.current.focus();
       }
     }
