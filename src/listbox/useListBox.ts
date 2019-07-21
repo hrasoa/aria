@@ -208,9 +208,10 @@ export default function useListBox(items: Item[], options: Options = {}) {
 
   function getItemAttributes(
     id: ID
-  ): { 'aria-selected': true | undefined; role: 'option' } {
+  ): { 'aria-selected': true | undefined; role: 'option'; id: ID } {
     return {
       'aria-selected': id === highlightedId || undefined,
+      id,
       role: 'option',
     };
   }

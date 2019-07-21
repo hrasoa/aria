@@ -3,7 +3,9 @@ import styled from 'styled-components';
 import { useListBox } from 'lib/index';
 import CountryListBoxItem from './CountryListBoxItem';
 
-const List = styled.ul`
+const List = styled.ul.attrs((props: { ariaLabelledBy?: string }) => ({
+  'aria-labelledby': props.ariaLabelledBy || undefined,
+}))`
   margin: 0;
   padding: 0;
   list-style: none;
@@ -19,6 +21,7 @@ const List = styled.ul`
 interface Props {
   border?: string;
   borderRadius?: string;
+  ariaLabelledBy?: string;
 }
 
 const CountryListBox: SFC<Props> = props => {

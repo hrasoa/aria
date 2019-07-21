@@ -13,7 +13,12 @@ function Home() {
         To get started, edit <code>src/App.tsx</code> or{' '}
         <code>src/Home.tsx</code> and save to reload.
       </p>
-      <CountryListBox border="1px solid rgba(0,0,0,.2)" borderRadius="4px" />
+      <span id="countries-exp">Countries</span>
+      <CountryListBox
+        ariaLabelledBy="countries-exp"
+        border="1px solid rgba(0,0,0,.2)"
+        borderRadius="4px"
+      />
       <ul className="Home-resources">
         <li>
           <a href="https://github.com/jaredpalmer/razzle">Docs</a>
