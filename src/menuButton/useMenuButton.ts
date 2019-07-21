@@ -53,10 +53,6 @@ export default function useMenuButton(options: Options) {
   }
 
   function handleButtonClick(e: MouseEvent<HTMLElement>) {
-    console.log('handleButtonClick', expanded);
-    if (expanded) {
-      return;
-    }
     handleExpanded(true);
   }
 
@@ -97,7 +93,6 @@ export default function useMenuButton(options: Options) {
       popupRef.current.getAttribute('tabindex') === '-1'
     ) {
       if (expanded) {
-        console.log('open');
         popupRef.current.focus();
       }
       if (
@@ -107,11 +102,7 @@ export default function useMenuButton(options: Options) {
         (!document.activeElement ||
           document.activeElement.tagName.toLowerCase() === 'body')
       ) {
-        console.log('close');
-
         buttonRef.current.focus();
-
-        console.log(document.activeElement);
       }
     }
   }, [expanded]);
