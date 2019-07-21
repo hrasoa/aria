@@ -13,7 +13,9 @@ interface Options {
 
 export default function useListBox(items: ID[], options: Options = {}) {
   const [highlightedId, handleHighlightItem] = useState<ID>();
-  const [highlightedRef, setHightlightedRef] = useState();
+  const [highlightedRef, setHightlightedRef] = useState<
+    RefObject<HTMLElement>
+  >();
   const interactionTypeHandler = useRef<{
     disengage: () => void;
     get: () => { key: boolean };
