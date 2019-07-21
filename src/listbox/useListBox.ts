@@ -121,27 +121,28 @@ export default function useListBox(items: Item[], options: Options = {}) {
         handleMoveLast();
         break;
       default:
-        if (code in typeAheadList) {
-          e.preventDefault();
-          if (typeAhead.current.code !== code) {
-            typeAhead.current.index = -1;
-          }
-          let index = list.current.findIndex(
-            (item, ii) =>
-              ii > typeAhead.current.index &&
-              `${item.label}`.match(new RegExp(`^${typeAheadList[code]}`, 'i'))
+        if (!(code in typeAheadList)) {
+          break;
+        }
+        e.preventDefault();
+        if (typeAhead.current.code !== code) {
+          typeAhead.current.index = -1;
+        }
+        let index = list.current.findIndex(
+          (item, ii) =>
+            ii > typeAhead.current.index &&
+            `${item.label}`.match(new RegExp(`^${typeAheadList[code]}`, 'i'))
+        );
+        if (index < 0) {
+          index = list.current.findIndex(item =>
+            `${item.label}`.match(new RegExp(`^${typeAheadList[code]}`, 'i'))
           );
-          if (index < 0) {
-            index = list.current.findIndex(item =>
-              `${item.label}`.match(new RegExp(`^${typeAheadList[code]}`, 'i'))
-            );
-          }
-          if (index >= 0) {
-            typeAhead.current.code = code;
-            typeAhead.current.index = index;
-            handleHighlightItem(list.current[index].id);
-            return;
-          }
+        }
+        if (index >= 0) {
+          typeAhead.current.code = code;
+          typeAhead.current.index = index;
+          handleHighlightItem(list.current[index].id);
+          return;
         }
         break;
     }
