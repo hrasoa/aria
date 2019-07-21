@@ -77,11 +77,10 @@ export default function useListBox(items: Item[], options: Options = {}) {
       return;
     }
     if (key) {
-      if (prevHighlightedId.current === list.current[0].id) {
+      if (prevHighlightedId.current) {
         handleScrollToHighlightedRef();
-        return;
       }
-      handleHighlightItem(list.current[0].id);
+      handleHighlightItem(prevHighlightedId.current || list.current[0].id);
     }
   }
 
