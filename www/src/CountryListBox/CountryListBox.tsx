@@ -9,9 +9,19 @@ const List = styled.ul`
   list-style: none;
   max-height: 20vh;
   overflow-y: scroll;
+  ${(props: { border?: string; borderRadius?: string }) =>
+    [
+      props.border ? `border: ${props.border};` : '',
+      props.borderRadius ? `border-radius: ${props.borderRadius}` : '',
+    ].join('')}
 `;
 
-const CountryListBox: SFC = () => {
+interface Props {
+  border?: string;
+  borderRadius?: string;
+}
+
+const CountryListBox: SFC<Props> = props => {
   const [countries, setCountries] = useState<
     Array<{ numericCode: string; name: string }>
   >([]);
@@ -67,6 +77,7 @@ const CountryListBox: SFC = () => {
       tabIndex={0}
       ref={listRef}
       {...listAttributes}
+      {...props}
     >
       {Items}
     </List>
