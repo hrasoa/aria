@@ -19,7 +19,7 @@ const App = () => (
     <GlobalStyle />
     <Switch>
       <Route exact={true} path="/" component={Home} />
-      <Route exact={true} path="/listbox" component={ListBoxView} />
+      <Route path="/listbox" component={ListBoxView} />
     </Switch>
   </React.Fragment>
 );

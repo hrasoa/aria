@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import CountryListBox from './CountryListBox/CountryListBox';
+import { Link, Switch, Route } from 'react-router-dom';
+import CountrySelect from './CountrySelect/CountrySelect';
 
 const Content = styled.div`
   width: 50%;
@@ -28,16 +30,39 @@ export default function ListBoxView() {
     <main>
       <Content>
         <h1>Listbox</h1>
+        <ul>
+          <li>
+            <Link to="/listbox">Scrollable</Link>
+          </li>
+          <li>
+            <Link to="/listbox/collapsible">collapsible</Link>
+          </li>
+        </ul>
       </Content>
       <Demo>
-        <div>
-          <span id="countries-exp">Countries</span>
-          <CountryListBox
-            ariaLabelledBy="countries-exp"
-            border="1px solid rgba(0,0,0,.2)"
-            borderRadius="4px"
+        <Switch>
+          <Route
+            path="/listbox"
+            exact
+            render={() => (
+              <div>
+                <span id="countries-exp">Countries</span>
+                <CountryListBox ariaLabelledBy="countries-exp" />
+              </div>
+            )}
           />
-        </div>
+          <Route
+            path="/listbox/collapsible"
+            exact
+            render={() => (
+              <div>
+                <input type="text" placeholder="Text" />
+                <span id="countries-exp">Countries</span>
+                <CountrySelect ariaLabelledBy="countries-exp" />
+              </div>
+            )}
+          />
+        </Switch>
       </Demo>
     </main>
   );

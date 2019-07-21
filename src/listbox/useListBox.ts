@@ -13,9 +13,7 @@ interface Options {
   listRef?: RefObject<HTMLElement>;
   scrollRef?: RefObject<HTMLElement>;
   initialId?: ID;
-  onFocus?: (key: boolean) => void;
   onSelect?: (id: ID) => void;
-  onEscape?: () => void;
 }
 
 const typeAheadRegex = /^[a-z0-9]{1}$/i;
@@ -41,7 +39,7 @@ export default function useListBox(items: Item[], options: Options = {}) {
     index: -1,
   });
   list.current = [...items];
-  const { listRef, scrollRef, onFocus, onSelect, onEscape } = options;
+  const { listRef, scrollRef, onSelect } = options;
 
   useEffect(() => {
     if (!interactionTypeHandler.current) {
@@ -72,10 +70,6 @@ export default function useListBox(items: Item[], options: Options = {}) {
       return;
     }
     const { key } = interactionTypeHandler.current.get();
-    if (onFocus) {
-      onFocus(key);
-      return;
-    }
     if (key) {
       if (prevHighlightedId.current === list.current[0].id) {
         handleScrollToHighlightedRef();
@@ -131,13 +125,8 @@ export default function useListBox(items: Item[], options: Options = {}) {
         if (!onSelect) {
           break;
         }
+        e.preventDefault();
         onSelect(highlightedId);
-        break;
-      case keyCode.escape:
-        if (!onEscape) {
-          break;
-        }
-        onEscape();
         break;
       default:
         if (!(code in typeAheadList)) {

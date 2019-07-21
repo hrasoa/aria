@@ -11,16 +11,11 @@ const List = styled.ul.attrs((props: { ariaLabelledBy?: string }) => ({
   list-style: none;
   max-height: 30vh;
   overflow-y: scroll;
-  ${(props: { border?: string; borderRadius?: string }) =>
-    [
-      props.border ? `border: ${props.border};` : '',
-      props.borderRadius ? `border-radius: ${props.borderRadius}` : '',
-    ].join('')}
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
 `;
 
 interface Props {
-  border?: string;
-  borderRadius?: string;
   ariaLabelledBy?: string;
 }
 
