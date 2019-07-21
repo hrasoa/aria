@@ -15,6 +15,14 @@ const SelectWrapper = styled.div`
   position: relative;
 `;
 
+const Button = styled.button`
+  border: none;
+  background: none;
+  &:focus {
+    border: 1px solid red;
+  }
+`;
+
 const List = styled.ul.attrs((props: { ariaLabelledBy?: string }) => ({
   'aria-labelledby': props.ariaLabelledBy || undefined,
 }))`
@@ -132,7 +140,7 @@ const CountrySelect: SFC<Props> = props => {
 
   return (
     <SelectWrapper ref={wrapperRef}>
-      <button
+      <Button
         type="button"
         onClick={handleButtonClick}
         onKeyDown={handleButtonKeyboardEvent}
@@ -140,7 +148,7 @@ const CountrySelect: SFC<Props> = props => {
         {...buttonAttributes}
       >
         Choose a country
-      </button>
+      </Button>
       <List
         onFocus={handlePopupFocus}
         onBlur={handlePopupBlur}
