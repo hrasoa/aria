@@ -15,6 +15,7 @@ interface Options {
   initialId?: ID;
   onFocus?: (key: boolean) => void;
   onSelect?: (id: ID) => void;
+  onEscape?: () => void;
 }
 
 const typeAheadRegex = /^[a-z0-9]{1}$/i;
@@ -40,7 +41,7 @@ export default function useListBox(items: Item[], options: Options = {}) {
     index: -1,
   });
   list.current = [...items];
-  const { listRef, scrollRef, onFocus, onSelect } = options;
+  const { listRef, scrollRef, onFocus, onSelect, onEscape } = options;
 
   useEffect(() => {
     if (!interactionTypeHandler.current) {
@@ -126,6 +127,12 @@ export default function useListBox(items: Item[], options: Options = {}) {
           break;
         }
         onSelect(highlightedId);
+        break;
+      case keyCode.escape:
+        if (!onEscape) {
+          break;
+        }
+        onEscape();
         break;
       default:
         if (!(code in typeAheadList)) {
