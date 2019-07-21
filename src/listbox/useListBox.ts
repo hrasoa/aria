@@ -47,15 +47,16 @@ export default function useListBox(items: ID[], options: Options = {}) {
     }
     const listClientRect = listRef.current.getBoundingClientRect();
     const elementClientRect = highlightedRef.current.getBoundingClientRect();
-    const listBottom = listClientRect.top + listClientRect.height;
-    const elementBottom = elementClientRect.top + elementClientRect.height;
+    const listTop = listClientRect.top;
+    const listBottom = listTop + listClientRect.height;
+    const elementTop = elementClientRect.top;
+    const elementBottom = elementTop + elementClientRect.height;
     if (elementBottom > listBottom) {
       scrollRef.current.scrollTop =
         scrollRef.current.scrollTop + (elementBottom - listBottom);
-    } else if (elementClientRect.top < listClientRect.top) {
+    } else if (elementTop < listTop) {
       scrollRef.current.scrollTop =
-        scrollRef.current.scrollTop -
-        (listClientRect.top - elementClientRect.top);
+        scrollRef.current.scrollTop - (listTop - elementTop);
     }
   }, [highlightedRef]);
 
