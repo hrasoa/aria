@@ -8,6 +8,7 @@ interface Options {
   readonly listRef?: RefObject<HTMLElement>;
   readonly scrollRef?: RefObject<HTMLElement>;
   readonly initialId?: ID;
+  readonly onFocus?: (key: boolean) => void;
 }
 
 export default function useListBox(items: ID[], options: Options = {}) {
@@ -20,7 +21,7 @@ export default function useListBox(items: ID[], options: Options = {}) {
   const itemsByIds = useRef<ID[]>([]);
   const prevHighlightedId = useRef<ID>(options && options.initialId);
   itemsByIds.current = [...items];
-  const { listRef, scrollRef } = options;
+  const { listRef, scrollRef, onFocus } = options;
 
   useEffect(() => {
     if (!interactionTypeHandler.current) {
@@ -68,6 +69,10 @@ export default function useListBox(items: ID[], options: Options = {}) {
       return;
     }
     const { key } = interactionTypeHandler.current.get();
+    if (onFocus) {
+      onFocus(key);
+      return;
+    }
     if (key) {
       handleHighlightItem(
         !prevHighlightedId.current
