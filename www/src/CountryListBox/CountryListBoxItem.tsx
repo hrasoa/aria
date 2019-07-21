@@ -23,11 +23,9 @@ const CountryListBoxItem: SFC<Props> = props => {
     country,
   } = props;
 
-  useEffect(() => {
-    if (highlightedId === country.numericCode) {
-      onHighlightRef(ref);
-    }
-  }, [highlightedId]);
+  if (highlightedId === country.numericCode) {
+    onHighlightRef(ref);
+  }
 
   function handleClick() {
     onHighlightItem(country.numericCode);
