@@ -145,11 +145,14 @@ export default function useListBox(items: Item[], options: Options = {}) {
         let index = list.current.findIndex(
           (item, ii) =>
             ii > typeAhead.current.index &&
-            `${item.label}`.match(new RegExp(`^${typeAheadList[code]}`, 'i'))
+            !!`${item.label}`.match(new RegExp(`^${typeAheadList[code]}`, 'i'))
         );
         if (index < 0) {
-          index = list.current.findIndex(item =>
-            `${item.label}`.match(new RegExp(`^${typeAheadList[code]}`, 'i'))
+          index = list.current.findIndex(
+            item =>
+              !!`${item.label}`.match(
+                new RegExp(`^${typeAheadList[code]}`, 'i')
+              )
           );
         }
         if (index >= 0) {
