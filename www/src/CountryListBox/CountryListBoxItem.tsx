@@ -3,12 +3,12 @@ import React, { SFC, useRef, useEffect, RefObject } from 'react';
 interface Props {
   highlightedId: any;
   getItemAttributes: (
-    id: number
+    id: string
   ) => { 'aria-selected': true | undefined; role: 'option' };
   onHighlightRef: (ref: RefObject<HTMLElement>) => void;
-  onHighlightItem: (id: number) => void;
+  onHighlightItem: (id: string) => void;
   country: {
-    numericCode: number;
+    numericCode: string;
     name: string;
   };
 }

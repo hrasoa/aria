@@ -2,22 +2,23 @@ import { useEffect, useRef, useState, KeyboardEvent, RefObject } from 'react';
 import interactionType from 'ally.js/src/observe/interaction-type';
 import keyCode from 'ally.js/src/map/keycode';
 
+type ID = any;
+
 interface Options {
   readonly listRef?: RefObject<HTMLElement>;
   readonly scrollRef?: RefObject<HTMLElement>;
+  readonly initialId?: ID;
 }
 
-type ID = any;
-
 export default function useListBox(items: ID[], options: Options = {}) {
-  const [highlightedId, setHighlightedId] = useState<ID>();
+  const [highlightedId, handleHighlightItem] = useState<ID>();
   const [highlightedRef, setHightlightedRef] = useState();
   const interactionTypeHandler = useRef<{
     disengage: () => void;
     get: () => { key: boolean };
   }>();
   const itemsByIds = useRef<ID[]>([]);
-  const prevHighlightedId = useRef<ID>();
+  const prevHighlightedId = useRef<ID>(options && options.initialId);
   itemsByIds.current = [...items];
   const { listRef, scrollRef } = options;
 
@@ -56,6 +57,9 @@ export default function useListBox(items: ID[], options: Options = {}) {
   }, [highlightedRef]);
 
   useEffect(() => {
+    if (!highlightedId) {
+      return;
+    }
     prevHighlightedId.current = highlightedId;
   }, [highlightedId]);
 
@@ -64,8 +68,12 @@ export default function useListBox(items: ID[], options: Options = {}) {
       return;
     }
     const { key } = interactionTypeHandler.current.get();
-    if (key && !prevHighlightedId.current) {
-      handleHighlightItem(itemsByIds.current[0]);
+    if (key) {
+      handleHighlightItem(
+        !prevHighlightedId.current
+          ? itemsByIds.current[0]
+          : prevHighlightedId.current
+      );
     }
   }
 
@@ -90,13 +98,6 @@ export default function useListBox(items: ID[], options: Options = {}) {
       default:
         break;
     }
-  }
-
-  function handleHighlightItem(id: ID) {
-    if (id === prevHighlightedId.current) {
-      return;
-    }
-    setHighlightedId(id);
   }
 
   function handleMoveUp() {

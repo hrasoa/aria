@@ -7,11 +7,13 @@ const List = styled.ul`
   margin: 0;
   padding: 0;
   list-style: none;
+  max-height: 300px;
+  overflow-y: scroll;
 `;
 
 const CountryListBox: SFC = () => {
   const [countries, setCountries] = useState<
-    Array<{ numericCode: number; name: string }>
+    Array<{ numericCode: string; name: string }>
   >([]);
   const listRef = useRef<HTMLUListElement>(null);
   const {
@@ -32,7 +34,7 @@ const CountryListBox: SFC = () => {
       .then(data => data.json())
       .then(data => {
         const d = [...data];
-        setCountries(d.slice(0, 15));
+        setCountries(d.slice(0, 40));
       });
   }, []);
 
