@@ -4,6 +4,11 @@ import keyCode from 'ally.js/src/map/keycode';
 
 type ID = any;
 
+interface Item {
+  id?: ID;
+  label?: string | number;
+}
+
 interface Options {
   readonly listRef?: RefObject<HTMLElement>;
   readonly scrollRef?: RefObject<HTMLElement>;
@@ -11,7 +16,14 @@ interface Options {
   readonly onFocus?: (key: boolean) => void;
 }
 
-export default function useListBox(items: ID[], options: Options = {}) {
+const typeAheadRegex = /^[a-z0-9]{1}$/i;
+const typeAheadList = Object.keys(keyCode).reduce(
+  (acc, key) =>
+    typeAheadRegex.exec(key) ? { ...acc, [keyCode[key]]: key } : acc,
+  {}
+);
+
+export default function useListBox(items: Item[], options: Options = {}) {
   const [highlightedId, handleHighlightItem] = useState<ID>();
   const [highlightedRef, setHightlightedRef] = useState<
     RefObject<HTMLElement>
@@ -20,9 +32,10 @@ export default function useListBox(items: ID[], options: Options = {}) {
     disengage: () => void;
     get: () => { key: boolean };
   }>();
-  const itemsByIds = useRef<ID[]>([]);
+  const list = useRef<Item[]>([]);
   const prevHighlightedId = useRef<ID>(options && options.initialId);
-  itemsByIds.current = [...items];
+  const typeAhead = useRef({ code: null, index: 0 });
+  list.current = [...items];
   const { listRef, scrollRef, onFocus } = options;
 
   useEffect(() => {
@@ -79,14 +92,15 @@ export default function useListBox(items: ID[], options: Options = {}) {
     if (key) {
       handleHighlightItem(
         !prevHighlightedId.current
-          ? itemsByIds.current[0]
+          ? list.current[0].id
           : prevHighlightedId.current
       );
     }
   }
 
-  function handleKeyboardNavigation(e: KeyboardEvent) {
-    switch (e.which) {
+  function handleKeyboardNavigation(e: KeyboardEvent & { code?: number }) {
+    const code = typeof e.code !== 'undefined' ? e.code : e.keyCode;
+    switch (code) {
       case keyCode.down:
         e.preventDefault();
         handleMoveDown();
@@ -104,6 +118,10 @@ export default function useListBox(items: ID[], options: Options = {}) {
         handleMoveLast();
         break;
       default:
+        if (code in typeAheadList) {
+          e.preventDefault();
+          console.log('type ahead', typeAheadList[code]);
+        }
         break;
     }
   }
@@ -112,30 +130,34 @@ export default function useListBox(items: ID[], options: Options = {}) {
     if (!prevHighlightedId.current) {
       return;
     }
-    const index = itemsByIds.current.indexOf(prevHighlightedId.current);
+    const index = list.current.findIndex(
+      item => item.id === prevHighlightedId.current
+    );
     if (index === 0) {
       return;
     }
-    handleHighlightItem(itemsByIds.current[index - 1]);
+    handleHighlightItem(list.current[index - 1].id);
   }
 
   function handleMoveDown() {
     if (!prevHighlightedId.current) {
       return;
     }
-    const index = itemsByIds.current.indexOf(prevHighlightedId.current);
-    if (index === itemsByIds.current.length - 1) {
+    const index = list.current.findIndex(
+      item => item.id === prevHighlightedId.current
+    );
+    if (index === list.current.length - 1) {
       return;
     }
-    handleHighlightItem(itemsByIds.current[index + 1]);
+    handleHighlightItem(list.current[index + 1].id);
   }
 
   function handleMoveFirst() {
-    handleHighlightItem(itemsByIds.current[0]);
+    handleHighlightItem(list.current[0].id);
   }
 
   function handleMoveLast() {
-    handleHighlightItem(itemsByIds.current[itemsByIds.current.length - 1]);
+    handleHighlightItem(list.current[list.current.length - 1].id);
   }
 
   function handleHighlightRef(ref: RefObject<HTMLElement>) {

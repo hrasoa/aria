@@ -24,10 +24,17 @@ const CountryListBox: SFC = () => {
     handleHighlightRef,
     listAttributes,
     getItemAttributes,
-  } = useListBox(countries.map(item => item && item.numericCode), {
-    listRef,
-    scrollRef: listRef,
-  });
+  } = useListBox(
+    countries.map(country =>
+      country.numericCode
+        ? { id: country.numericCode, label: country.name }
+        : {}
+    ),
+    {
+      listRef,
+      scrollRef: listRef,
+    }
+  );
 
   useEffect(() => {
     fetch('https://restcountries.eu/rest/v2/region/europe')
