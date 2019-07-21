@@ -9,7 +9,7 @@ const List = styled.ul.attrs((props: { ariaLabelledBy?: string }) => ({
   margin: 0;
   padding: 0;
   list-style: none;
-  max-height: 20vh;
+  max-height: 30vh;
   overflow-y: scroll;
   ${(props: { border?: string; borderRadius?: string }) =>
     [
