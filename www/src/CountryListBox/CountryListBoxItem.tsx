@@ -1,4 +1,5 @@
 import React, { SFC, useRef, RefObject } from 'react';
+import styled from 'styled-components';
 
 interface Props {
   highlightedId: any;
@@ -12,6 +13,15 @@ interface Props {
     name: string;
   };
 }
+
+const ListItem = styled.li`
+  padding: 8px;
+  transition: background 0.2s;
+  ${props =>
+    props['aria-selected']
+      ? 'background: rgba(0, 0, 0, .1);'
+      : 'background: #ffffff;'}
+`;
 
 const CountryListBoxItem: SFC<Props> = props => {
   const ref = useRef<HTMLLIElement>(null);
@@ -34,9 +44,9 @@ const CountryListBoxItem: SFC<Props> = props => {
   const attr = getItemAttributes(country.numericCode);
 
   return (
-    <li ref={ref} onClick={handleClick} {...attr}>
-      {highlightedId === country.numericCode && 'x'} {country.name}
-    </li>
+    <ListItem ref={ref} onClick={handleClick} {...attr}>
+      {country.name}
+    </ListItem>
   );
 };
 

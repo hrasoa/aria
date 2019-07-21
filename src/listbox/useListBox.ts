@@ -55,7 +55,34 @@ export default function useListBox(items: Item[], options: Options = {}) {
     };
   }, []);
 
+  useEffect(handleScrollToHighlightedRef, [highlightedRef]);
+
   useEffect(() => {
+    if (!highlightedId) {
+      return;
+    }
+    prevHighlightedId.current = highlightedId;
+  }, [highlightedId]);
+
+  function handleFocus() {
+    if (!interactionTypeHandler.current) {
+      return;
+    }
+    const { key } = interactionTypeHandler.current.get();
+    if (onFocus) {
+      onFocus(key);
+      return;
+    }
+    if (key) {
+      if (prevHighlightedId.current === list.current[0].id) {
+        handleScrollToHighlightedRef();
+        return;
+      }
+      handleHighlightItem(list.current[0].id);
+    }
+  }
+
+  function handleScrollToHighlightedRef() {
     if (
       !(highlightedRef && highlightedRef.current) ||
       !(listRef && listRef.current) ||
@@ -75,31 +102,6 @@ export default function useListBox(items: Item[], options: Options = {}) {
     } else if (elementTop < listTop) {
       scrollRef.current.scrollTop =
         scrollRef.current.scrollTop - (listTop - elementTop);
-    }
-  }, [highlightedRef]);
-
-  useEffect(() => {
-    if (!highlightedId) {
-      return;
-    }
-    prevHighlightedId.current = highlightedId;
-  }, [highlightedId]);
-
-  function handleFocus() {
-    if (!interactionTypeHandler.current) {
-      return;
-    }
-    const { key } = interactionTypeHandler.current.get();
-    if (onFocus) {
-      onFocus(key);
-      return;
-    }
-    if (key) {
-      handleHighlightItem(
-        !prevHighlightedId.current
-          ? list.current[0].id
-          : prevHighlightedId.current
-      );
     }
   }
 
@@ -219,6 +221,7 @@ export default function useListBox(items: Item[], options: Options = {}) {
     handleHighlightItem,
     handleHighlightRef,
     handleKeyboardNavigation,
+    handleScrollToHighlightedRef,
     highlightedId,
     listAttributes,
   };
