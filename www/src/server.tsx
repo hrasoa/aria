@@ -34,6 +34,7 @@ const server = express()
         <meta charSet='utf-8' />
         <title>Razzle TypeScript</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap" rel="stylesheet">
         ${
           assets.client.css
             ? `<link rel="stylesheet" href="${assets.client.css}">`
