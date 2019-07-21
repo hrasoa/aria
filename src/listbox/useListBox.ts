@@ -10,11 +10,11 @@ interface Item {
 }
 
 interface Options {
-  readonly listRef?: RefObject<HTMLElement>;
-  readonly scrollRef?: RefObject<HTMLElement>;
-  readonly initialId?: ID;
-  readonly onFocus?: (key: boolean) => void;
-  readonly onSelect?: (id: ID) => void;
+  listRef?: RefObject<HTMLElement>;
+  scrollRef?: RefObject<HTMLElement>;
+  initialId?: ID;
+  onFocus?: (key: boolean) => void;
+  onSelect?: (id: ID) => void;
 }
 
 const typeAheadRegex = /^[a-z0-9]{1}$/i;
