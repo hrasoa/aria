@@ -79,8 +79,9 @@ export default function useListBox(items: Item[], options: Options = {}) {
     if (key) {
       if (prevHighlightedId.current) {
         handleScrollToHighlightedRef();
+        return;
       }
-      handleHighlightItem(prevHighlightedId.current || list.current[0].id);
+      handleHighlightItem(list.current[0].id);
     }
   }
 
