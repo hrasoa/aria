@@ -118,7 +118,7 @@ export default function useMenuButton(options: Options) {
   } = {
     'aria-expanded': expanded,
     'aria-haspopup': popupRole || true,
-    'aria-controls': popupId || undefined,
+    'aria-controls': popupId,
   };
 
   return {
