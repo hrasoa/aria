@@ -1,4 +1,4 @@
-import React, { SFC, useRef, useEffect, RefObject } from 'react';
+import React, { SFC, useRef, RefObject } from 'react';
 
 interface Props {
   highlightedId: any;
