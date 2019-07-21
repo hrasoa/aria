@@ -77,7 +77,7 @@ export default function useListBox(items: Item[], options: Options = {}) {
       return;
     }
     if (key) {
-      if (prevHighlightedId.current) {
+      if (prevHighlightedId.current === list.current[0].id) {
         handleScrollToHighlightedRef();
         return;
       }
@@ -161,7 +161,8 @@ export default function useListBox(items: Item[], options: Options = {}) {
           );
         }
         if (index >= 0) {
-          typeAhead.current = { code, index };
+          typeAhead.current.code = code;
+          typeAhead.current.index = index;
           handleHighlightItem(list.current[index].id);
           return;
         }
