@@ -34,7 +34,10 @@ export default function useListBox(items: Item[], options: Options = {}) {
   }>();
   const list = useRef<Item[]>([]);
   const prevHighlightedId = useRef<ID>(options && options.initialId);
-  const typeAhead = useRef({ code: null, index: 0 });
+  const typeAhead = useRef<{ code: number | null; index: number }>({
+    code: null,
+    index: -1,
+  });
   list.current = [...items];
   const { listRef, scrollRef, onFocus } = options;
 
@@ -120,7 +123,25 @@ export default function useListBox(items: Item[], options: Options = {}) {
       default:
         if (code in typeAheadList) {
           e.preventDefault();
-          console.log('type ahead', typeAheadList[code]);
+          if (typeAhead.current.code !== code) {
+            typeAhead.current.index = -1;
+          }
+          let index = list.current.findIndex(
+            (item, ii) =>
+              ii > typeAhead.current.index &&
+              `${item.label}`.match(new RegExp(`^${typeAheadList[code]}`, 'i'))
+          );
+          if (index < 0) {
+            index = list.current.findIndex(item =>
+              `${item.label}`.match(new RegExp(`^${typeAheadList[code]}`, 'i'))
+            );
+          }
+          if (index >= 0) {
+            typeAhead.current.code = code;
+            typeAhead.current.index = index;
+            handleHighlightItem(list.current[index].id);
+            return;
+          }
         }
         break;
     }
