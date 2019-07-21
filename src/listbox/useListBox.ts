@@ -161,8 +161,7 @@ export default function useListBox(items: Item[], options: Options = {}) {
           );
         }
         if (index >= 0) {
-          typeAhead.current.code = code;
-          typeAhead.current.index = index;
+          typeAhead.current = { code, index };
           handleHighlightItem(list.current[index].id);
           return;
         }
