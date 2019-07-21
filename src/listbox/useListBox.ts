@@ -62,6 +62,9 @@ export default function useListBox(items: Item[], options: Options = {}) {
       return;
     }
     prevHighlightedId.current = highlightedId;
+    typeAhead.current.index = list.current.findIndex(
+      item => item.id === highlightedId
+    );
   }, [highlightedId]);
 
   function handleFocus() {
@@ -141,7 +144,7 @@ export default function useListBox(items: Item[], options: Options = {}) {
           break;
         }
         e.preventDefault();
-        if (typeAhead.current.code !== code) {
+        if (typeAhead.current.code && typeAhead.current.code !== code) {
           typeAhead.current.index = -1;
         }
         let index = list.current.findIndex(
