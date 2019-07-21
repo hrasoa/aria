@@ -113,7 +113,7 @@ export default function useMenuButton(options: Options) {
 
   const buttonAttributes: {
     'aria-expanded': boolean;
-    'aria-haspopup': true | 'listbox';
+    'aria-haspopup': true | 'listbox' | 'dialog' | 'menu' | 'tree' | 'grid';
     'aria-controls': string | undefined;
   } = {
     'aria-expanded': expanded,
