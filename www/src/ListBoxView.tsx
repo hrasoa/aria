@@ -5,7 +5,7 @@ import CountryListBox from './CountryListBox/CountryListBox';
 const Content = styled.div`
   width: 50%;
   min-height: 100vh;
-  box-shadow: 0 0 30px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
   position: relative;
   z-index: 2;
 `;
