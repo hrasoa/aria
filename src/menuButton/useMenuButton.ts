@@ -74,7 +74,7 @@ export default function useMenuButton(options: Options) {
       case keyCode.escape:
         if (popupRef.current && document.activeElement === popupRef.current) {
           popupRef.current.blur();
-          return;
+          break;
         }
         handleClose();
         break;
