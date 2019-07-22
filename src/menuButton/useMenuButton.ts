@@ -11,19 +11,19 @@ import keyCode from 'ally.js/src/map/keycode';
 interface Options {
   popupRef: RefObject<HTMLElement>;
   wrapperRef: RefObject<HTMLElement>;
-  buttonRef: RefObject<HTMLElement>;
-  popupRole?: 'listbox' | true;
+  controllerRef: RefObject<HTMLElement>;
+  popupRole?: true | 'listbox' | 'dialog' | 'menu' | 'tree' | 'grid';
   popupId?: string;
   onClickOutside?: () => void;
 }
 
 export default function useMenuButton(options: Options) {
-  const [expanded, handleExpanded] = useState<boolean>(false);
+  const [expanded, setExpanded] = useState<boolean>(false);
   const prevExpanded = useRef<boolean>();
   const {
     wrapperRef,
     popupRef,
-    buttonRef,
+    controllerRef,
     popupId,
     popupRole,
     onClickOutside,
@@ -31,16 +31,16 @@ export default function useMenuButton(options: Options) {
 
   useEffect(() => {
     if (onClickOutside) {
-      document.addEventListener('click', handlePopupClickOutside, true);
+      document.addEventListener('click', handlePopupOnClickOutside, true);
     }
     return () => {
       if (onClickOutside) {
-        document.removeEventListener('click', handlePopupClickOutside, true);
+        document.removeEventListener('click', handlePopupOnClickOutside, true);
       }
     };
   }, []);
 
-  function handlePopupClickOutside(event: Event) {
+  function handlePopupOnClickOutside(event: Event) {
     if (!wrapperRef.current) {
       return;
     }
@@ -52,23 +52,22 @@ export default function useMenuButton(options: Options) {
     }
   }
 
-  function handleButtonClick(e: MouseEvent<HTMLElement>) {
-    handleExpanded(true);
+  function handleControllerOnClick(e: MouseEvent<HTMLElement>) {
+    setExpanded(true);
   }
 
-  function handleButtonKeyboardEvent(e: KeyboardEvent & { code?: number }) {
+  function handleControllerOnKeyDown(e: KeyboardEvent & { code?: number }) {
     const code = typeof e.code !== 'undefined' ? e.code : e.keyCode;
     switch (code) {
-      case keyCode.enter:
       case keyCode.down:
-        handleExpanded(true);
+        setExpanded(true);
         break;
       default:
         break;
     }
   }
 
-  function handlePopupKeyboardEvent(e: KeyboardEvent & { code?: number }) {
+  function handlePopupOnKeyDown(e: KeyboardEvent & { code?: number }) {
     const code = typeof e.code !== 'undefined' ? e.code : e.keyCode;
     switch (code) {
       case keyCode.escape:
@@ -76,15 +75,15 @@ export default function useMenuButton(options: Options) {
           popupRef.current.blur();
           return;
         }
-        handleExpanded(false);
+        setExpanded(false);
         break;
       default:
         break;
     }
   }
 
-  function handlePopupBlur() {
-    handleExpanded(false);
+  function handlePopupOnBlur() {
+    setExpanded(false);
   }
 
   useEffect(() => {
@@ -98,11 +97,11 @@ export default function useMenuButton(options: Options) {
       if (
         !expanded &&
         prevExpanded.current &&
-        buttonRef.current &&
+        controllerRef.current &&
         (!document.activeElement ||
           document.activeElement.tagName.toLowerCase() === 'body')
       ) {
-        buttonRef.current.focus();
+        controllerRef.current.focus();
       }
     }
   }, [expanded]);
@@ -111,7 +110,7 @@ export default function useMenuButton(options: Options) {
     prevExpanded.current = expanded;
   }, [expanded]);
 
-  const buttonAttributes: {
+  const controllerAttributes: {
     'aria-expanded': boolean;
     'aria-haspopup': true | 'listbox' | 'dialog' | 'menu' | 'tree' | 'grid';
     'aria-controls': string | undefined;
@@ -122,12 +121,12 @@ export default function useMenuButton(options: Options) {
   };
 
   return {
-    buttonAttributes,
+    controllerAttributes,
     expanded,
-    handleExpanded,
-    handleButtonClick,
-    handleButtonKeyboardEvent,
-    handlePopupBlur,
-    handlePopupKeyboardEvent,
+    setExpanded,
+    handleControllerOnClick,
+    handleControllerOnKeyDown,
+    handlePopupOnBlur,
+    handlePopupOnKeyDown,
   };
 }

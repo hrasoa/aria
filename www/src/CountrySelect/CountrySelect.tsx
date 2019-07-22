@@ -56,10 +56,10 @@ const CountrySelect: SFC<Props> = props => {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const {
     highlightedId,
-    handleKeyboardNavigation,
-    handleHighlightItem,
+    handleOnKeyDown,
+    setHighlightedId,
     handleScrollToHighlightedRef,
-    handleHighlightRef,
+    setHighlightRef,
     listAttributes,
     getItemAttributes,
   } = useListBox(
@@ -75,15 +75,15 @@ const CountrySelect: SFC<Props> = props => {
     }
   );
   const {
-    buttonAttributes,
+    controllerAttributes,
     expanded,
-    handleButtonClick,
-    handleButtonKeyboardEvent,
-    handlePopupBlur,
-    handlePopupKeyboardEvent,
+    handleControllerOnClick,
+    handleControllerOnKeyDown,
+    handlePopupOnBlur,
+    handlePopupOnKeyDown,
   } = useMenuButton({
     wrapperRef,
-    buttonRef,
+    controllerRef: buttonRef,
     popupRef: listRef,
     popupRole: 'listbox',
   });
@@ -98,24 +98,24 @@ const CountrySelect: SFC<Props> = props => {
   }, []);
 
   function handleKeyboardEvents(e: KeyboardEvent) {
-    handleKeyboardNavigation(e);
-    handlePopupKeyboardEvent(e);
+    handleOnKeyDown(e);
+    handlePopupOnKeyDown(e);
   }
 
-  function handlePopupFocus() {
+  function handlePopupOnFocus() {
     if (!value) {
-      handleHighlightItem(countries[0].numericCode);
+      setHighlightedId(countries[0].numericCode);
       return;
     }
     if (value === highlightedId) {
       handleScrollToHighlightedRef();
       return;
     }
-    handleHighlightItem(value);
+    setHighlightedId(value);
   }
 
   function handleSelect(id: string) {
-    handleHighlightItem(id);
+    setHighlightedId(id);
     setValue(id);
     if (listRef.current) {
       listRef.current.blur();
@@ -129,7 +129,7 @@ const CountrySelect: SFC<Props> = props => {
           key={country.numericCode}
           highlightedId={highlightedId}
           onClick={handleSelect}
-          onHighlightRef={handleHighlightRef}
+          onHighlightRef={setHighlightRef}
           getItemAttributes={getItemAttributes}
           country={country}
           value={value}
@@ -142,16 +142,16 @@ const CountrySelect: SFC<Props> = props => {
     <SelectWrapper ref={wrapperRef}>
       <Button
         type="button"
-        onClick={handleButtonClick}
-        onKeyDown={handleButtonKeyboardEvent}
+        onClick={handleControllerOnClick}
+        onKeyDown={handleControllerOnKeyDown}
         ref={buttonRef}
-        {...buttonAttributes}
+        {...controllerAttributes}
       >
         Choose a country
       </Button>
       <List
-        onFocus={handlePopupFocus}
-        onBlur={handlePopupBlur}
+        onFocus={handlePopupOnFocus}
+        onBlur={handlePopupOnBlur}
         onKeyDown={handleKeyboardEvents}
         tabIndex={-1}
         ref={listRef}

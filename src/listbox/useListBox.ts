@@ -24,10 +24,8 @@ const typeAheadList = Object.keys(keyCode).reduce(
 );
 
 export default function useListBox(items: Item[], options: Options = {}) {
-  const [highlightedId, handleHighlightItem] = useState<ID>();
-  const [highlightedRef, handleHighlightRef] = useState<
-    RefObject<HTMLElement>
-  >();
+  const [highlightedId, setHighlightedId] = useState<ID>();
+  const [highlightedRef, setHighlightRef] = useState<RefObject<HTMLElement>>();
   const interactionTypeHandler = useRef<{
     disengage: () => void;
     get: () => { key: boolean };
@@ -55,7 +53,7 @@ export default function useListBox(items: Item[], options: Options = {}) {
 
   useEffect(handleScrollToHighlightedRef, [highlightedRef]);
 
-  function handleFocus() {
+  function handleOnFocus() {
     if (!interactionTypeHandler.current) {
       return;
     }
@@ -65,7 +63,7 @@ export default function useListBox(items: Item[], options: Options = {}) {
         handleScrollToHighlightedRef();
         return;
       }
-      handleHighlightItem(list.current[0].id);
+      setHighlightedId(list.current[0].id);
     }
   }
 
@@ -92,7 +90,7 @@ export default function useListBox(items: Item[], options: Options = {}) {
     }
   }
 
-  function handleKeyboardNavigation(e: KeyboardEvent & { code?: number }) {
+  function handleOnKeyDown(e: KeyboardEvent & { code?: number }) {
     const code = typeof e.code !== 'undefined' ? e.code : e.keyCode;
     switch (code) {
       case keyCode.down:
@@ -142,7 +140,7 @@ export default function useListBox(items: Item[], options: Options = {}) {
         if (index >= 0) {
           typeAhead.current.code = code;
           typeAhead.current.index = index;
-          handleHighlightItem(list.current[index].id);
+          setHighlightedId(list.current[index].id);
           return;
         }
         break;
@@ -159,7 +157,7 @@ export default function useListBox(items: Item[], options: Options = {}) {
     if (index === 0) {
       return;
     }
-    handleHighlightItem(list.current[index - 1].id);
+    setHighlightedId(list.current[index - 1].id);
   }
 
   function handleMoveDown() {
@@ -172,15 +170,15 @@ export default function useListBox(items: Item[], options: Options = {}) {
     if (index === list.current.length - 1) {
       return;
     }
-    handleHighlightItem(list.current[index + 1].id);
+    setHighlightedId(list.current[index + 1].id);
   }
 
   function handleMoveFirst() {
-    handleHighlightItem(list.current[0].id);
+    setHighlightedId(list.current[0].id);
   }
 
   function handleMoveLast() {
-    handleHighlightItem(list.current[list.current.length - 1].id);
+    setHighlightedId(list.current[list.current.length - 1].id);
   }
 
   const listAttributes: { 'aria-activedescendant': ID; role: 'listbox' } = {
@@ -210,10 +208,10 @@ export default function useListBox(items: Item[], options: Options = {}) {
 
   return {
     getItemAttributes,
-    handleFocus,
-    handleHighlightItem,
-    handleHighlightRef,
-    handleKeyboardNavigation,
+    setHighlightedId,
+    setHighlightRef,
+    handleOnFocus,
+    handleOnKeyDown,
     handleScrollToHighlightedRef,
     highlightedId,
     listAttributes,

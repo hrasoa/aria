@@ -26,10 +26,10 @@ const CountryListBox: SFC<Props> = props => {
   const listRef = useRef<HTMLUListElement>(null);
   const {
     highlightedId,
-    handleFocus,
-    handleKeyboardNavigation,
-    handleHighlightItem,
-    handleHighlightRef,
+    handleOnFocus,
+    handleOnKeyDown,
+    setHighlightedId,
+    setHighlightRef,
     listAttributes,
     getItemAttributes,
   } = useListBox(
@@ -59,8 +59,8 @@ const CountryListBox: SFC<Props> = props => {
         <CountryListBoxItem
           key={country.numericCode}
           highlightedId={highlightedId}
-          onHighlightItem={handleHighlightItem}
-          onHighlightRef={handleHighlightRef}
+          onHighlightItem={setHighlightedId}
+          onHighlightRef={setHighlightRef}
           getItemAttributes={getItemAttributes}
           country={country}
         />
@@ -70,8 +70,8 @@ const CountryListBox: SFC<Props> = props => {
 
   return (
     <List
-      onFocus={handleFocus}
-      onKeyDown={handleKeyboardNavigation}
+      onFocus={handleOnFocus}
+      onKeyDown={handleOnKeyDown}
       tabIndex={0}
       ref={listRef}
       {...listAttributes}
