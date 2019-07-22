@@ -68,13 +68,13 @@ const CountrySelect: SFC<Props> = props => {
   const listRef = useRef<HTMLUListElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const {
-    highlightedId,
-    handleOnKeyDown,
-    setHighlightedId,
-    handleScrollToHighlightedRef,
-    setHighlightRef,
-    listAttributes,
     getItemAttributes,
+    handleOnKeyDown,
+    handleScrollToHighlightedRef,
+    highlightedId,
+    listAttributes,
+    setHighlightRef,
+    setHighlightedId,
   } = useListBox(
     countries.map(country =>
       country.numericCode
@@ -83,7 +83,7 @@ const CountrySelect: SFC<Props> = props => {
     ),
     {
       listRef,
-      onSelect: handleSelect,
+      onSelect: handleOnSelect,
       scrollRef: listRef,
     }
   );
@@ -126,7 +126,7 @@ const CountrySelect: SFC<Props> = props => {
     setHighlightedId(value);
   }
 
-  function handleSelect(id: string) {
+  function handleOnSelect(id: string) {
     setHighlightedId(id);
     setValue(id);
     if (listRef.current) {
@@ -140,7 +140,7 @@ const CountrySelect: SFC<Props> = props => {
         <CountryListBoxItem
           key={country.numericCode}
           highlightedId={highlightedId}
-          onClick={handleSelect}
+          onClick={handleOnSelect}
           onHighlightRef={setHighlightRef}
           getItemAttributes={getItemAttributes}
           country={country}
