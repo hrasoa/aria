@@ -89,9 +89,9 @@ const CountrySelect: SFC<Props> = props => {
   const {
     controllerAttributes,
     expanded,
-    handleControllerOnClick,
+    handleExpand,
     handleControllerOnKeyDown,
-    handlePopupOnBlur,
+    handleClose,
     handlePopupOnKeyDown,
   } = useMenuButton({
     controllerRef: buttonRef,
@@ -153,7 +153,7 @@ const CountrySelect: SFC<Props> = props => {
     <SelectWrapper>
       <Button
         type="button"
-        onClick={handleControllerOnClick}
+        onClick={handleExpand}
         onKeyDown={handleControllerOnKeyDown}
         ref={buttonRef}
         {...controllerAttributes}
@@ -165,7 +165,7 @@ const CountrySelect: SFC<Props> = props => {
       </Button>
       <List
         onFocus={handlePopupOnFocus}
-        onBlur={handlePopupOnBlur}
+        onBlur={handleClose}
         onKeyDown={handleKeyboardEvents}
         tabIndex={-1}
         ref={listRef}
