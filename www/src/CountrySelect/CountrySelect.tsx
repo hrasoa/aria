@@ -48,7 +48,7 @@ const List = styled.ul.attrs((props: { ariaLabelledBy?: string }) => ({
     props.expanded ? 'block' : 'none'};
   border-radius: 4px;
   position: absolute;
-  top: 0;
+  top: 100px;
   z-index: 3;
   left: 0;
   background: #ffffff;

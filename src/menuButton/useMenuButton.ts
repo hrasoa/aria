@@ -20,6 +20,7 @@ interface Options {
 export default function useMenuButton(options: Options) {
   const [expanded, setExpanded] = useState<boolean>(false);
   const prevExpanded = useRef<boolean>();
+  const preventExpand = useRef<boolean>();
   const {
     wrapperRef,
     popupRef,
@@ -53,14 +54,14 @@ export default function useMenuButton(options: Options) {
   }
 
   function handleControllerOnClick(e: MouseEvent<HTMLElement>) {
-    setExpanded(true);
+    handleExpand();
   }
 
   function handleControllerOnKeyDown(e: KeyboardEvent & { code?: number }) {
     const code = typeof e.code !== 'undefined' ? e.code : e.keyCode;
     switch (code) {
       case keyCode.down:
-        setExpanded(true);
+        handleExpand();
         break;
       default:
         break;
@@ -75,7 +76,7 @@ export default function useMenuButton(options: Options) {
           popupRef.current.blur();
           return;
         }
-        setExpanded(false);
+        handleClose();
         break;
       default:
         break;
@@ -83,6 +84,18 @@ export default function useMenuButton(options: Options) {
   }
 
   function handlePopupOnBlur() {
+    setExpanded(false);
+  }
+
+  function handleExpand() {
+    if (preventExpand.current) {
+      preventExpand.current = false;
+      return;
+    }
+    setExpanded(true);
+  }
+
+  function handleClose() {
     setExpanded(false);
   }
 
@@ -94,14 +107,18 @@ export default function useMenuButton(options: Options) {
       if (expanded) {
         popupRef.current.focus();
       }
-      if (
-        !expanded &&
-        prevExpanded.current &&
-        controllerRef.current &&
-        (!document.activeElement ||
-          document.activeElement.tagName.toLowerCase() === 'body')
-      ) {
-        controllerRef.current.focus();
+      if (!expanded && prevExpanded.current) {
+        if (document.activeElement === controllerRef.current) {
+          preventExpand.current = true;
+          return;
+        }
+        if (
+          controllerRef.current &&
+          (!document.activeElement ||
+            document.activeElement.tagName.toLowerCase() === 'body')
+        ) {
+          controllerRef.current.focus();
+        }
       }
     }
   }, [expanded]);
@@ -123,10 +140,11 @@ export default function useMenuButton(options: Options) {
   return {
     controllerAttributes,
     expanded,
+    handleClose,
     handleControllerOnClick,
     handleControllerOnKeyDown,
+    handleExpand,
     handlePopupOnBlur,
     handlePopupOnKeyDown,
-    setExpanded,
   };
 }
