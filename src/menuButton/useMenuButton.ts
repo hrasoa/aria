@@ -150,6 +150,5 @@ export default function useMenuButton(options: Options) {
     handleControllerOnKeyDown,
     handleExpand,
     handlePopupOnKeyDown,
-    handlePopupBlur,
   };
 }
