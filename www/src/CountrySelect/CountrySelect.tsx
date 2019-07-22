@@ -33,6 +33,7 @@ const Button = styled.button`
   &::after {
     content: '\\021D5';
     color: white;
+    margin-left: 8px;
   }
 `;
 
