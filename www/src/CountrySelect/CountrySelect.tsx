@@ -69,8 +69,8 @@ const CountrySelect: SFC<Props> = props => {
     ),
     {
       listRef,
-      scrollRef: listRef,
       onSelect: handleSelect,
+      scrollRef: listRef,
     }
   );
   const {

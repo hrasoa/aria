@@ -208,12 +208,12 @@ export default function useListBox(items: Item[], options: Options = {}) {
 
   return {
     getItemAttributes,
-    setHighlightedId,
-    setHighlightRef,
     handleOnFocus,
     handleOnKeyDown,
     handleScrollToHighlightedRef,
     highlightedId,
     listAttributes,
+    setHighlightRef,
+    setHighlightedId,
   };
 }

@@ -10,8 +10,8 @@ import keyCode from 'ally.js/src/map/keycode';
 
 interface Options {
   popupRef: RefObject<HTMLElement>;
-  wrapperRef?: RefObject<HTMLElement>;
   controllerRef: RefObject<HTMLElement>;
+  wrapperRef?: RefObject<HTMLElement>;
   popupRole?: true | 'listbox' | 'dialog' | 'menu' | 'tree' | 'grid';
   popupId?: string;
   onClickOutside?: () => void;
@@ -111,22 +111,22 @@ export default function useMenuButton(options: Options) {
   }, [expanded]);
 
   const controllerAttributes: {
+    'aria-controls': string | undefined;
     'aria-expanded': boolean;
     'aria-haspopup': true | 'listbox' | 'dialog' | 'menu' | 'tree' | 'grid';
-    'aria-controls': string | undefined;
   } = {
+    'aria-controls': popupId,
     'aria-expanded': expanded,
     'aria-haspopup': popupRole || true,
-    'aria-controls': popupId,
   };
 
   return {
     controllerAttributes,
     expanded,
-    setExpanded,
     handleControllerOnClick,
     handleControllerOnKeyDown,
     handlePopupOnBlur,
     handlePopupOnKeyDown,
+    setExpanded,
   };
 }

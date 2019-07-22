@@ -43,7 +43,7 @@ export default function ListBoxView() {
         <Switch>
           <Route
             path="/listbox"
-            exact
+            exact={true}
             render={() => (
               <div>
                 <span id="countries-exp">Countries</span>
@@ -53,7 +53,7 @@ export default function ListBoxView() {
           />
           <Route
             path="/listbox/collapsible"
-            exact
+            exact={true}
             render={() => (
               <div>
                 <span id="countries-exp">Countries</span>
