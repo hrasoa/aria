@@ -76,6 +76,9 @@ export default function useListBox(items: Item[], options: Options = {}) {
       return;
     }
     const listClientRect = listRef.current.getBoundingClientRect();
+    if (!listClientRect.height) {
+      return;
+    }
     const elementClientRect = highlightedRef.current.getBoundingClientRect();
     const listTop = listClientRect.top;
     const listBottom = listTop + listClientRect.height;
