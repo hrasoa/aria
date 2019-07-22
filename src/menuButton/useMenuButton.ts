@@ -84,7 +84,7 @@ export default function useMenuButton(options: Options) {
   }
 
   function handlePopupOnBlur() {
-    setExpanded(false);
+    handleClose();
   }
 
   function handleExpand() {
