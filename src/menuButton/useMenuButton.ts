@@ -1,18 +1,11 @@
-import {
-  KeyboardEvent,
-  useState,
-  useEffect,
-  RefObject,
-  useRef,
-  MouseEvent,
-} from 'react';
+import { KeyboardEvent, useState, useEffect, RefObject, useRef } from 'react';
 import keyCode from 'ally.js/src/map/keycode';
 
 interface Options {
   popupRef: RefObject<HTMLElement>;
   controllerRef: RefObject<HTMLElement>;
   wrapperRef?: RefObject<HTMLElement>;
-  popupRole?: true | 'listbox' | 'dialog' | 'menu' | 'tree' | 'grid';
+  popupRole?: 'listbox' | 'dialog' | 'menu' | 'tree' | 'grid';
   popupId?: string;
   onClickOutside?: () => void;
 }
