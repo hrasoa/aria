@@ -31,11 +31,11 @@ export default function useMenuButton(options: Options) {
   } = options;
 
   useEffect(() => {
-    if (onClickOutside) {
+    if (onClickOutside && wrapperRef && wrapperRef.current) {
       document.addEventListener('click', handlePopupOnClickOutside, true);
     }
     return () => {
-      if (onClickOutside) {
+      if (onClickOutside && wrapperRef && wrapperRef.current) {
         document.removeEventListener('click', handlePopupOnClickOutside, true);
       }
     };
