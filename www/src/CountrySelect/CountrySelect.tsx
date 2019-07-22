@@ -35,7 +35,7 @@ const List = styled.ul.attrs((props: { ariaLabelledBy?: string }) => ({
     props.expanded ? 'block' : 'none'};
   border-radius: 4px;
   position: absolute;
-  top: 0;
+  top: 100px;
   z-index: 3;
   left: 0;
   background: #ffffff;
@@ -52,7 +52,6 @@ const CountrySelect: SFC<Props> = props => {
   >([]);
   const [value, setValue] = useState<string>();
   const listRef = useRef<HTMLUListElement>(null);
-  const wrapperRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const {
     highlightedId,
@@ -82,7 +81,6 @@ const CountrySelect: SFC<Props> = props => {
     handlePopupOnBlur,
     handlePopupOnKeyDown,
   } = useMenuButton({
-    wrapperRef,
     controllerRef: buttonRef,
     popupRef: listRef,
     popupRole: 'listbox',
@@ -139,7 +137,7 @@ const CountrySelect: SFC<Props> = props => {
   );
 
   return (
-    <SelectWrapper ref={wrapperRef}>
+    <SelectWrapper>
       <Button
         type="button"
         onClick={handleControllerOnClick}

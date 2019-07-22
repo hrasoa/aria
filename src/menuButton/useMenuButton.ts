@@ -10,7 +10,7 @@ import keyCode from 'ally.js/src/map/keycode';
 
 interface Options {
   popupRef: RefObject<HTMLElement>;
-  wrapperRef: RefObject<HTMLElement>;
+  wrapperRef?: RefObject<HTMLElement>;
   controllerRef: RefObject<HTMLElement>;
   popupRole?: true | 'listbox' | 'dialog' | 'menu' | 'tree' | 'grid';
   popupId?: string;
@@ -41,7 +41,7 @@ export default function useMenuButton(options: Options) {
   }, []);
 
   function handlePopupOnClickOutside(event: Event) {
-    if (!wrapperRef.current) {
+    if (!(wrapperRef && wrapperRef.current)) {
       return;
     }
     if (
