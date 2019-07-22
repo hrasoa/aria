@@ -53,10 +53,6 @@ export default function useMenuButton(options: Options) {
     }
   }
 
-  function handleControllerOnClick(e: MouseEvent<HTMLElement>) {
-    handleExpand();
-  }
-
   function handleControllerOnKeyDown(e: KeyboardEvent & { code?: number }) {
     const code = typeof e.code !== 'undefined' ? e.code : e.keyCode;
     switch (code) {
@@ -81,10 +77,6 @@ export default function useMenuButton(options: Options) {
       default:
         break;
     }
-  }
-
-  function handlePopupOnBlur() {
-    handleClose();
   }
 
   function handleExpand() {
