@@ -13,13 +13,26 @@ import useMenuButton from 'lib/menuButton/useMenuButton';
 
 const SelectWrapper = styled.div`
   position: relative;
+  margin-top: 10px;
 `;
 
 const Button = styled.button`
   border: none;
   background: none;
-  &:focus {
-    border: 1px solid red;
+  background-color: green;
+  padding: 4px 8px;
+  color: white;
+  font-family: inherit;
+  font-size: inherit;
+  border-radius: 4px;
+  min-width: 200px;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  &::after {
+    content: '\\021D5';
+    color: white;
   }
 `;
 
@@ -145,7 +158,10 @@ const CountrySelect: SFC<Props> = props => {
         ref={buttonRef}
         {...controllerAttributes}
       >
-        Choose a country
+        {(value &&
+          (countries.find(c => c.numericCode === value) || { name: '' })
+            .name) ||
+          'Choose a country'}
       </Button>
       <List
         onFocus={handlePopupOnFocus}

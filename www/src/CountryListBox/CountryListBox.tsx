@@ -7,6 +7,7 @@ const List = styled.ul.attrs((props: { ariaLabelledBy?: string }) => ({
   'aria-labelledby': props.ariaLabelledBy || undefined,
 }))`
   margin: 0;
+  margin-top: 10px;
   padding: 0;
   list-style: none;
   max-height: 30vh;
