@@ -128,9 +128,7 @@ const CountrySelect: SFC<Props> = props => {
   function handleOnSelect(id: string) {
     setHighlightedId(id);
     setValue(id);
-    if (listRef.current) {
-      listRef.current.blur();
-    }
+    handleClose();
   }
 
   const Items = useMemo(

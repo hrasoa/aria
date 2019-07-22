@@ -21,6 +21,7 @@ export default function useMenuButton(options: Options) {
   const [expanded, setExpanded] = useState<boolean>(false);
   const previousExpanded = useRef<boolean>();
   const preventExpand = useRef<boolean>();
+  const popupManuallyBlurred = useRef<boolean>();
   const {
     wrapperRef,
     popupRef,
@@ -68,8 +69,8 @@ export default function useMenuButton(options: Options) {
     const code = typeof e.code !== 'undefined' ? e.code : e.keyCode;
     switch (code) {
       case keyCode.escape:
-        if (popupRef.current && document.activeElement === popupRef.current) {
-          popupRef.current.blur();
+        if (document.activeElement === popupRef.current) {
+          handlePopupBlur();
           break;
         }
         handleClose();
@@ -87,7 +88,18 @@ export default function useMenuButton(options: Options) {
     setExpanded(true);
   }
 
+  function handlePopupBlur() {
+    if (popupRef.current && document.activeElement === popupRef.current) {
+      popupManuallyBlurred.current = true;
+      popupRef.current.blur();
+    }
+  }
+
   function handleClose() {
+    if (document.activeElement === popupRef.current) {
+      handlePopupBlur();
+      return;
+    }
     setExpanded(false);
   }
 
@@ -97,6 +109,7 @@ export default function useMenuButton(options: Options) {
       popupRef.current.getAttribute('tabindex') === '-1'
     ) {
       if (expanded) {
+        popupManuallyBlurred.current = false;
         popupRef.current.focus();
       }
       if (!expanded && previousExpanded.current) {
@@ -105,6 +118,7 @@ export default function useMenuButton(options: Options) {
           return;
         }
         if (
+          popupManuallyBlurred.current &&
           controllerRef.current &&
           (!document.activeElement ||
             document.activeElement.tagName.toLowerCase() === 'body')
@@ -136,5 +150,6 @@ export default function useMenuButton(options: Options) {
     handleControllerOnKeyDown,
     handleExpand,
     handlePopupOnKeyDown,
+    handlePopupBlur,
   };
 }
