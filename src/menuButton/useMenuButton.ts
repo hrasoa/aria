@@ -19,7 +19,7 @@ interface Options {
 
 export default function useMenuButton(options: Options) {
   const [expanded, setExpanded] = useState<boolean>(false);
-  const prevExpanded = useRef<boolean>();
+  const previousExpanded = useRef<boolean>();
   const preventExpand = useRef<boolean>();
   const {
     wrapperRef,
@@ -107,7 +107,7 @@ export default function useMenuButton(options: Options) {
       if (expanded) {
         popupRef.current.focus();
       }
-      if (!expanded && prevExpanded.current) {
+      if (!expanded && previousExpanded.current) {
         if (document.activeElement === controllerRef.current) {
           preventExpand.current = true;
           return;
@@ -124,7 +124,7 @@ export default function useMenuButton(options: Options) {
   }, [expanded]);
 
   useEffect(() => {
-    prevExpanded.current = expanded;
+    previousExpanded.current = expanded;
   }, [expanded]);
 
   const controllerAttributes: {
