@@ -7,9 +7,8 @@ import React, {
   KeyboardEvent,
 } from 'react';
 import styled from 'styled-components';
-import { useListBox } from 'lib/index';
+import { useListBox, useMenuButton } from 'lib/index';
 import CountryListBoxItem from './CountrySelectItem';
-import { useMenuButton } from 'lib/index';
 
 const SelectWrapper = styled.div`
   position: relative;

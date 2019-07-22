@@ -1,2 +1,2 @@
-export * from './listbox/index';
-export * from './menuButton/index';
+export * from './listbox';
+export * from './menuButton';
