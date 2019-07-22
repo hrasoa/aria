@@ -41,13 +41,13 @@ export default function useMenuButton(options: Options) {
     };
   }, []);
 
-  function handlePopupOnClickOutside(event: Event) {
+  function handlePopupOnClickOutside(e: Event) {
     if (!(wrapperRef && wrapperRef.current)) {
       return;
     }
     if (
       onClickOutside &&
-      !wrapperRef.current.contains(event.target as HTMLElement)
+      !wrapperRef.current.contains(e.target as HTMLElement)
     ) {
       onClickOutside();
     }
